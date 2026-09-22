@@ -1,0 +1,26 @@
+# build output
+dist/
+.astro/
+.output/
+
+# dependencies
+node_modules/
+
+# vercel
+.vercel/
+
+# environment (secrets — never commit)
+.env
+.env.*
+!.env.example
+
+# macOS
+.DS_Store
+
+# raw source artwork (kept locally; optimised versions live in /public)
+source/
+public/brand/tv.svg
+
+# large media — host externally, never commit
+*.mov
+*.mp4
