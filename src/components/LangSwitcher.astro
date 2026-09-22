@@ -1,0 +1,42 @@
+---
+import { LOCALES } from '../consts';
+---
+<div class="lang" role="group" aria-label="Choose language">
+  {LOCALES.map((l) => (
+    <button type="button" class="lang__btn" data-locale={l.code} aria-label={l.name} lang={l.code}>
+      {l.label}
+    </button>
+  ))}
+</div>
+
+<style>
+  .lang { display: inline-flex; align-items: center; gap: 4px; }
+  .lang__btn {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.05em;
+    color: var(--bone-mute); background: transparent; border: 0;
+    padding: 4px 2px 6px; cursor: pointer; line-height: 1;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .lang__btn:hover { color: var(--bone); }
+  .lang__btn[aria-current='true'] { color: var(--bone); border-bottom-color: var(--gold); }
+</style>
+
+<script>
+  // Shell for now — full translation (EN / 简体中文 / 日本語) wires in later.
+  // Reflects the choice and sets <html lang> so the browser's translate has a hint.
+  const btns = document.querySelectorAll<HTMLButtonElement>('.lang__btn');
+  const saved = localStorage.getItem('bod-locale') || 'en';
+  const apply = (code: string) => {
+    btns.forEach((b) => b.setAttribute('aria-current', String(b.dataset.locale === code)));
+    document.documentElement.lang = code;
+  };
+  apply(saved);
+  btns.forEach((b) =>
+    b.addEventListener('click', () => {
+      const code = b.dataset.locale || 'en';
+      localStorage.setItem('bod-locale', code);
+      apply(code);
+    })
+  );
+</script>
