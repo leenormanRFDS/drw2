@@ -23,20 +23,24 @@ import { LOCALES } from '../consts';
 </style>
 
 <script>
-  // Shell for now — full translation (EN / 简体中文 / 日本語) wires in later.
-  // Reflects the choice and sets <html lang> so the browser's translate has a hint.
+  import { setLocale, getInitialLocale } from '../i18n/client';
+
   const btns = document.querySelectorAll<HTMLButtonElement>('.lang__btn');
-  const saved = localStorage.getItem('bod-locale') || 'en';
-  const apply = (code: string) => {
-    btns.forEach((b) => b.setAttribute('aria-current', String(b.dataset.locale === code)));
-    document.documentElement.lang = code;
-  };
-  apply(saved);
-  btns.forEach((b) =>
+  const current = getInitialLocale();
+
+  btns.forEach((b) => {
+    b.setAttribute('aria-current', String(b.dataset.locale === current));
     b.addEventListener('click', () => {
-      const code = b.dataset.locale || 'en';
-      localStorage.setItem('bod-locale', code);
-      apply(code);
-    })
-  );
+      const code = b.dataset.locale;
+      if (code) {
+        setLocale(code);
+      }
+    });
+  });
+
+  // Listen for external locale updates
+  window.addEventListener('bod:locale_changed', ((e: CustomEvent) => {
+    const active = e.detail?.locale;
+    btns.forEach((b) => b.setAttribute('aria-current', String(b.dataset.locale === active)));
+  }) as EventListener);
 </script>

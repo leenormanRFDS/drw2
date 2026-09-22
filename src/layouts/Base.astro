@@ -4,6 +4,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '../components/Analytics.astro';
+import EvidenceLedger from '../components/EvidenceLedger.astro';
 import { SITE } from '../consts';
 
 interface Props {
@@ -54,14 +55,16 @@ const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.t
     {!bare && (
       <div class="bookbar">
         <span class="bookbar__from">FROM <b>$18</b> · CHILD</span>
-        <a class="btn" href={SITE.bookPath}>Book Tickets</a>
+        <a class="btn" href={SITE.bookPath} data-i18n="nav.bookTickets">Book Tickets</a>
       </div>
     )}
 
     <!-- Desktop sticky Book Now — surfaces after the hero -->
     {!bare && Astro.url.pathname !== SITE.bookPath && Astro.url.pathname !== `${SITE.bookPath}/` && (
-      <a class="btn-book bookfab" href={SITE.bookPath} data-bookfab aria-hidden="true" tabindex="-1">Book Now</a>
+      <a class="btn-book bookfab" href={SITE.bookPath} data-bookfab aria-hidden="true" tabindex="-1" data-i18n="nav.bookTickets">Book Tickets</a>
     )}
+
+    <EvidenceLedger />
 
     <!-- Global weighted smooth scroll, synced to GSAP ScrollTrigger -->
     <script>

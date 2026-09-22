@@ -65,9 +65,9 @@ export const PACKAGES: TicketPackage[] = [
     checkoutUrl: 'https://rfdsdarwin1.rezdy.com/433269/aviation-attraction-combo-ticket',
     tiers: [
       { code: 'adult', label: 'Adult', price: 47, max: 20 },
-      { code: 'child', label: 'Child', price: 23, max: 20 },
-      { code: 'senior', label: 'Senior / Student', price: 34, note: 'With proof', max: 20 },
-      { code: 'family', label: 'Family of 5', price: 118, max: 10 },
+      { code: 'senior', label: 'Senior', price: 38, note: 'With proof', max: 20 },
+      { code: 'child', label: 'Child', price: 25, note: 'Ages 5–15', max: 20 },
+      { code: 'family', label: 'Family of 5', price: 132, note: '2 adults + 3 children', max: 10 },
     ],
   },
   {
@@ -85,7 +85,7 @@ export const PACKAGES: TicketPackage[] = [
     tiers: [
       { code: 'adult', label: 'Adult', price: 70, max: 20 },
       { code: 'senior', label: 'Senior', price: 58, note: 'With proof', max: 20 },
-      { code: 'child', label: 'Child', price: 44, max: 20 },
+      { code: 'child', label: 'Child', price: 44, note: 'Ages 4–15', max: 20 },
     ],
   },
   {
@@ -104,23 +104,24 @@ export const PACKAGES: TicketPackage[] = [
     tiers: [
       { code: 'adult', label: 'Adult', price: 118, max: 20 },
       { code: 'senior', label: 'Senior', price: 100, note: 'With proof', max: 20 },
-      { code: 'child', label: 'Child', price: 75, max: 20 },
+      { code: 'child', label: 'Child', price: 75, note: 'Ages 4–15', max: 20 },
     ],
   },
 ];
 
-export const NAV: { label: string; href: string }[] = [
-  { label: 'The Experience', href: '/experience' },
-  { label: 'The Story', href: '/story' },
-  { label: 'Visit', href: '/visit' },
-  { label: 'Programs', href: '/schools' },
-  { label: 'Contact', href: '/contact' },
+export const NAV: { label: string; href: string; key: string }[] = [
+  { label: 'The Experience', href: '/experience', key: 'nav.experience' },
+  { label: 'The Story', href: '/story', key: 'nav.story' },
+  { label: 'Visit', href: '/visit', key: 'nav.visit' },
+  { label: 'Programs', href: '/schools', key: 'nav.schools' },
+  { label: 'Contact', href: '/contact', key: 'nav.contact' },
 ];
 
-export const LOCALES: { code: string; label: string; name: string }[] = [
-  { code: 'en', label: 'EN', name: 'English' },
-  { code: 'zh', label: '中文', name: '简体中文' },
-  { code: 'ja', label: '日本語', name: '日本語' },
+export const LOCALES: { code: string; label: string; name: string; tolgeeTag?: string }[] = [
+  { code: 'en', label: 'EN', name: 'English', tolgeeTag: 'en' },
+  { code: 'zh', label: '中文', name: '简体中文', tolgeeTag: 'zh' },
+  { code: 'ja', label: '日本語', name: '日本語', tolgeeTag: 'ja' },
+  { code: 'de', label: 'DE', name: 'Deutsch', tolgeeTag: 'de-DE' },
 ];
 
 export const PRICES: { tier: string; price: number; note?: string }[] = [

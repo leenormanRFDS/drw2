@@ -14,8 +14,15 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
   >
     <div class="evidence-ledger__header">
       <h2 id="ledger-title" class="evidence-ledger__title record" data-ledger-title>Historical Evidence</h2>
-      <button class="evidence-ledger__close" data-ledger-close aria-label="Close evidence ledger" id="ledger-close-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      <button 
+        type="button" 
+        class="evidence-ledger__close" 
+        data-ledger-close 
+        aria-label="Close evidence ledger"
+        data-i18n-attr="aria-label:story.evidence.close"
+        id="ledger-close-btn"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="pointer-events: none;"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="evidence-ledger__content">
@@ -25,7 +32,7 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
       </div>
       
       <div class="evidence-ledger__section">
-        <h3 class="record">What We Know</h3>
+        <h3 class="record" data-i18n="story.evidence.whatWeKnow">What We Know</h3>
         <p class="evidence-ledger__text" data-ledger-known></p>
       </div>
 
@@ -88,10 +95,11 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
   .evidence-ledger__scrim {
     position: absolute;
     inset: 0;
-    background: rgba(12, 10, 8, 0.6);
+    background: rgba(12, 10, 8, 0.65);
     opacity: 0;
     transition: opacity 0.4s ease;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
   }
   .evidence-ledger.is-open .evidence-ledger__scrim {
     opacity: 1;
@@ -107,6 +115,7 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
     transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    z-index: 2;
   }
   .evidence-ledger.is-open .evidence-ledger__panel {
     transform: translateX(0);
@@ -118,7 +127,7 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
     }
     .evidence-ledger__panel {
       max-width: 100%;
-      height: 80vh;
+      height: 85vh;
       border-left: none;
       border-top: 1px solid rgba(236, 231, 219, 0.1);
       transform: translateY(100%);
@@ -145,21 +154,23 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
     background: none;
     border: none;
     color: var(--bone);
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
   }
   .evidence-ledger__close:hover {
-    background: rgba(236, 231, 219, 0.05);
+    background: rgba(236, 231, 219, 0.1);
+    color: var(--gold);
   }
   .evidence-ledger__close svg {
     width: 20px;
     height: 20px;
+    pointer-events: none;
   }
 
   .evidence-ledger__content {
@@ -292,16 +303,16 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
   const ledger = document.getElementById('evidence-ledger');
   const panel = document.getElementById('evidence-ledger-panel');
   const closeBtn = document.getElementById('ledger-close-btn');
-  const closers = document.querySelectorAll('[data-ledger-close]');
   let lastFocus: HTMLElement | null = null;
 
   function setBackgroundInert(inert: boolean) {
     // Collect interactive root containers to mark inert/hidden while modal is active
     const candidateRoots = document.querySelectorAll(
-      'body > :not(#evidence-ledger), main, aside, nav, header.nav, footer, .spatial-stage, .s-intro, .s-tl-section, .s-plot-mobile, .s-film, .s-plotbg, .s-clock'
+      'body > :not(#evidence-ledger), main, aside, nav, header.nav, footer, .spatial-stage, .s-intro, .s-tl-section, .s-plot-mobile, .s-film, .s-plotbg, .s-clock, .bookbar, .bookfab'
     );
     candidateRoots.forEach((el) => {
-      if (el && el !== ledger && !ledger?.contains(el)) {
+      // Must NOT mark the ledger, any child of the ledger, or any ANCESTOR of the ledger inert!
+      if (el && el !== ledger && !ledger?.contains(el) && !el.contains(ledger)) {
         if (inert) {
           el.setAttribute('inert', '');
           el.setAttribute('aria-hidden', 'true');
@@ -319,13 +330,46 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
     ledger.setAttribute('aria-hidden', 'true');
     setBackgroundInert(false);
     if (lastFocus && typeof lastFocus.focus === 'function') {
-      lastFocus.focus();
+      try {
+        lastFocus.focus();
+      } catch {
+        // Safe fallback
+      }
     }
     lastFocus = null;
   }
 
-  closers.forEach(btn => {
-    btn.addEventListener('click', closeEvidenceLedger);
+  // Expose on window for direct access
+  (window as any).closeEvidenceLedger = closeEvidenceLedger;
+
+  // Wire all close triggers (buttons, scrims, etc.)
+  document.querySelectorAll('[data-ledger-close]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeEvidenceLedger();
+    });
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeEvidenceLedger();
+    });
+  }
+
+  // Clicking on outer ledger backdrop
+  ledger?.addEventListener('click', (e) => {
+    if (e.target === ledger || (e.target as HTMLElement).hasAttribute('data-ledger-close')) {
+      e.preventDefault();
+      closeEvidenceLedger();
+    }
+  });
+
+  // Stop propagation inside panel
+  panel?.addEventListener('click', (e) => {
+    e.stopPropagation();
   });
 
   // Keyboard navigation within modal:
@@ -336,6 +380,7 @@ const evidenceItems = Object.values(CANONICAL_EVIDENCE_RECORDS);
 
     if (e.key === 'Escape') {
       e.preventDefault();
+      e.stopPropagation();
       closeEvidenceLedger();
       return;
     }

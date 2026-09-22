@@ -16,7 +16,7 @@ const icon = (n: string) =>
   <div class="bflow__steps">
     <!-- 01 · Choose experience -->
     <div class="step" id="step-exp">
-      <div class="step__head"><span class="step__n">01</span><h2 class="step__t">Choose your experience</h2></div>
+      <div class="step__head"><span class="step__n">01</span><h2 class="step__t" data-i18n="tickets.title">Choose your experience</h2></div>
       <div class="packs">
         {PACKAGES.map((p) => (
           <button type="button" class={`pack ${p.glow ? 'pack--glow' : ''}`} data-pkg={p.slug} aria-pressed={p.slug === 'general-entry' ? 'true' : 'false'}>
@@ -32,7 +32,7 @@ const icon = (n: string) =>
                 {p.lead.label.toLowerCase().includes('family') ? <span class="pack__per">per family</span> : <span class="pack__per">per person</span>}
               </span>
               <span class="pack__includes">
-                <span class="pack__inclabel">Includes</span>
+                <span class="pack__inclabel" data-i18n="tickets.includes">Includes</span>
                 {p.includes.map((x) => (
                   <span class="pack__inc"><b>✓</b> {x}</span>
                 ))}
@@ -51,36 +51,37 @@ const icon = (n: string) =>
 
     <!-- 02 · Who's coming -->
     <div class="step" id="step-who" data-step-who>
-      <div class="step__head"><span class="step__n">02</span><h2 class="step__t">Who's coming?</h2></div>
+      <div class="step__head"><span class="step__n">02</span><h2 class="step__t" data-i18n="tickets.selectTickets">Who's coming?</h2></div>
       <div class="tickets" data-tickets></div>
     </div>
 
     <!-- 03 · Date -->
     <div class="step" id="step-date" data-step-date>
-      <div class="step__head"><span class="step__n">03</span><h2 class="step__t">Select a date</h2></div>
-      <div class="cal" data-dates><p class="hint" data-loading>Loading availability…</p></div>
+      <div class="step__head"><span class="step__n">03</span><h2 class="step__t" data-i18n="tickets.selectDate">Select a date</h2></div>
+      <div class="cal" data-dates><p class="hint" data-loading data-i18n="tickets.availability.checking">Loading availability…</p></div>
       <p class="hint" data-mocknote hidden>Example times shown — live availability connects once Rezdy is linked.</p>
     </div>
 
     <!-- 04 · Time -->
     <div class="step" id="step-time" data-step-session hidden>
-      <div class="step__head"><span class="step__n">04</span><h2 class="step__t">Select a time</h2></div>
+      <div class="step__head"><span class="step__n">04</span><h2 class="step__t" data-i18n="tickets.selectTime">Select a time</h2></div>
       <div class="sessions" data-sessions></div>
     </div>
   </div>
 
   <!-- Your Visit — always visible, sticky -->
   <aside class="bsum" data-summary aria-label="Your visit summary">
-    <p class="bsum__title">Your Visit</p>
+    <p class="bsum__title" data-i18n="tickets.summary">Your Visit</p>
     <div class="bsum__rows">
-      <div class="bsum__row"><span class="bsum__k">Experience</span><span class="bsum__v" data-sum-pkg>General Entry</span></div>
-      <div class="bsum__row"><span class="bsum__k">Tickets</span><span class="bsum__v" data-sum-qty>1 × Family</span></div>
-      <div class="bsum__row"><span class="bsum__k">Date</span><span class="bsum__v" data-sum-date>—</span></div>
-      <div class="bsum__row"><span class="bsum__k">Time</span><span class="bsum__v" data-sum-time>—</span></div>
+      <div class="bsum__row"><span class="bsum__k" data-i18n="confirmation.package">Experience</span><span class="bsum__v" data-sum-pkg>General Entry</span></div>
+      <div class="bsum__row"><span class="bsum__k" data-i18n="confirmation.tickets">Tickets</span><span class="bsum__v" data-sum-qty>1 × Family</span></div>
+      <div class="bsum__row"><span class="bsum__k" data-i18n="confirmation.date">Date</span><span class="bsum__v" data-sum-date>—</span></div>
+      <div class="bsum__row"><span class="bsum__k" data-i18n="confirmation.time">Time</span><span class="bsum__v" data-sum-time>—</span></div>
     </div>
-    <div class="bsum__total"><span>Total</span><strong data-total>$90</strong></div>
+    <div class="bsum__total"><span data-i18n="tickets.total">Total</span><strong data-total>$90</strong></div>
     <button class="btn-book bsum__cta" data-book>Book 1 Ticket • $90</button>
-    <p class="bsum__secure">Secure payment via Rezdy</p>
+    <div class="bsum__alert" data-verifyalert hidden role="alert"></div>
+    <p class="bsum__secure" data-i18n="tickets.checkout.secure">Secure payment via Rezdy</p>
   </aside>
 
   <script type="application/json" data-packages set:html={JSON.stringify(PACKAGES)}></script>
@@ -177,6 +178,17 @@ const icon = (n: string) =>
   .bsum__total span { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bone-dim); }
   .bsum__total strong { font-family: var(--font-display-xl); font-weight: 400; font-size: 2.3rem; color: var(--bone); line-height: 1; }
   .bsum__cta { width: 100%; justify-content: center; text-align: center; }
+  .bsum__alert {
+    margin: 12px 0 0;
+    padding: 10px 14px;
+    background: rgba(185, 28, 28, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: 4px;
+    color: #fca5a5;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-align: left;
+  }
   .bsum__secure { text-align: center; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-mute); margin: 14px 0 0; }
 
   /* Mobile: the summary becomes a slim fixed bar so it never covers the form.
@@ -208,6 +220,20 @@ const icon = (n: string) =>
   .bflow .trow__label { color: var(--bone); font-weight: 500; font-size: 1.12rem; font-family: var(--font-display-reg); letter-spacing: 0.01em; }
   .bflow .trow__sub { color: var(--bone-mute); font-size: 0.86rem; font-family: var(--font-serif); }
   .bflow .trow__sub b { color: var(--gold-bright); font-weight: 500; font-family: var(--font-mono); font-size: 0.8rem; }
+  .bflow .trow__subtotal { color: var(--gold-bright); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; margin-left: 4px; }
+
+  .bflow .allday-banner {
+    display: flex; flex-direction: column; gap: 8px; padding: 20px 24px; border-radius: 8px;
+    background: linear-gradient(165deg, var(--char-3), var(--char-2));
+    border: 1px solid var(--line-strong); max-width: 560px;
+  }
+  .bflow .allday-badge {
+    align-self: flex-start; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--gold-bright); background: rgba(198, 161, 91, 0.14);
+    padding: 3px 8px; border-radius: 3px; border: 1px solid rgba(198, 161, 91, 0.28);
+  }
+  .bflow .allday-text { margin: 0; font-size: 0.94rem; color: var(--bone-dim); line-height: 1.5; }
+  .bflow .allday-text strong { color: var(--bone); }
 
   .bflow .stepper {
     display: flex; align-items: center; gap: 0; border-radius: 100px;
@@ -291,14 +317,29 @@ const icon = (n: string) =>
     box-shadow: 0 40px 100px rgba(0,0,0,0.7);
   }
   .co-modal__bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-bottom: 1px solid var(--line); flex: 0 0 auto; }
-  .co-modal__brand { display: flex; flex-direction: column; gap: 2px; }
-  .co-modal__brand b { font-family: var(--font-display-reg); font-weight: 500; font-size: 0.98rem; color: var(--bone); letter-spacing: 0.01em; }
-  .co-modal__brand span { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-mute); }
+  .co-modal__brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .co-modal__brand b { font-family: var(--font-display-reg); font-weight: 500; font-size: 0.98rem; color: var(--bone); letter-spacing: 0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .co-modal__brand span { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bone-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .co-modal__actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .co-modal__ext {
+    font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--bone-dim); text-decoration: none; padding: 7px 11px; border-radius: 4px;
+    border: 1px solid var(--line-strong); transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .co-modal__ext:hover { color: var(--gold-bright); border-color: var(--gold); }
   .co-modal__close { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line-strong); background: transparent; color: var(--bone); font-size: 1.3rem; line-height: 1; cursor: pointer; display: grid; place-items: center; transition: border-color 0.2s var(--ease), color 0.2s var(--ease); }
   .co-modal__close:hover { border-color: var(--gold); color: var(--gold-bright); }
   .co-modal__frame { flex: 1; position: relative; background: #fff; }
   .co-modal__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .co-modal__load { position: absolute; inset: 0; display: grid; place-items: center; background: var(--char); color: var(--bone-mute); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; }
+  .co-modal__load {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    background: var(--char); color: var(--bone); font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .co-modal__spinner {
+    width: 28px; height: 28px; border: 2px solid var(--line-strong); border-top-color: var(--gold);
+    border-radius: 50%; animation: coSpin 0.9s linear infinite;
+  }
+  @keyframes coSpin { to { transform: rotate(360deg); } }
   body.co-open { overflow: hidden; }
   @media (max-width: 560px) { .co-modal__panel { width: 100vw; height: 100dvh; border-radius: 0; top: 0; left: 0; transform: none; } }
 </style>
@@ -308,16 +349,24 @@ const icon = (n: string) =>
   <div class="co-modal__scrim" data-coclose></div>
   <div class="co-modal__panel">
     <div class="co-modal__bar">
-      <span class="co-modal__brand"><b data-cotitle>Complete your booking</b><span>Secure checkout · RFDS Darwin</span></span>
-      <button class="co-modal__close" data-coclose aria-label="Close checkout">×</button>
+      <span class="co-modal__brand"><b data-cotitle>Complete your booking</b><span data-codesc>Secure checkout · Royal Flying Doctor Service</span></span>
+      <div class="co-modal__actions">
+        <a class="co-modal__ext" data-coext target="_blank" rel="noopener noreferrer" href="#">New window ↗</a>
+        <button class="co-modal__close" data-coclose aria-label="Close checkout">×</button>
+      </div>
     </div>
     <div class="co-modal__frame">
-      <div class="co-modal__load" data-coload>Loading secure checkout…</div>
+      <div class="co-modal__load" data-coload>
+        <span class="co-modal__spinner" aria-hidden="true"></span>
+        <span>Loading secure checkout…</span>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
+  import { t, bindTranslations } from '../i18n/client';
+
   const root = document.querySelector<HTMLElement>('[data-booking]');
   if (root) {
     const PACKAGES = JSON.parse(root.querySelector('[data-packages]')!.textContent || '[]');
@@ -388,17 +437,32 @@ const icon = (n: string) =>
     /* ---- 02 · steppers ---- */
     function renderTickets() {
       const c = el('[data-tickets]'); c.innerHTML = '';
-      state.pkg.tiers.forEach((t: any) => {
+      state.pkg.tiers.forEach((tData: any) => {
         const row = document.createElement('div'); row.className = 'trow';
-        const currentQty = state.qty[t.code] || 0;
+        const currentQty = state.qty[tData.code] || 0;
+        const subtotalText = currentQty > 0 ? ` · ${money(tData.price * currentQty)}` : '';
+        const tierKey = tData.code === 'adult' ? 'tickets.tiers.adult' :
+          tData.code === 'child' ? 'tickets.tiers.child' :
+          tData.code === 'concession' ? 'tickets.tiers.concession' :
+          tData.code === 'family' ? 'tickets.tiers.family' : null;
+        const displayLabel = tierKey ? t(tierKey) : tData.label;
+
         row.innerHTML =
-          `<div class="trow__info"><span class="trow__label">${t.label}</span><span class="trow__sub"><b>${money(t.price)}</b>${t.note ? ' · ' + t.note : ''}</span></div>` +
-          `<div class="stepper"><button type="button" class="stepper__b" data-dec aria-label="Fewer ${t.label}">−</button><span class="stepper__n" data-count aria-live="polite">${currentQty}</span><button type="button" class="stepper__b" data-inc aria-label="More ${t.label}">+</button></div>`;
+          `<div class="trow__info"><span class="trow__label">${displayLabel}</span><span class="trow__sub"><b>${money(tData.price)}</b>${tData.note ? ' · ' + tData.note : ''}<span class="trow__subtotal" data-subtotal>${subtotalText}</span></span></div>` +
+          `<div class="stepper"><button type="button" class="stepper__b" data-dec aria-label="Fewer ${displayLabel}">−</button><span class="stepper__n" data-count aria-live="polite">${currentQty}</span><button type="button" class="stepper__b" data-inc aria-label="More ${displayLabel}">+</button></div>`;
         const cnt = row.querySelector('[data-count]') as HTMLElement;
         const dec = row.querySelector('[data-dec]') as HTMLButtonElement;
-        const upd = () => { cnt.textContent = String(state.qty[t.code]); dec.disabled = state.qty[t.code] === 0; sync(); };
-        dec.addEventListener('click', () => { state.qty[t.code] = Math.max(0, state.qty[t.code] - 1); upd(); });
-        row.querySelector('[data-inc]')!.addEventListener('click', () => { state.qty[t.code] = Math.min(t.max || 20, state.qty[t.code] + 1); upd(); });
+        const sub = row.querySelector('[data-subtotal]') as HTMLElement;
+        const upd = () => {
+          cnt.textContent = String(state.qty[tData.code]);
+          dec.disabled = state.qty[tData.code] === 0;
+          if (sub) {
+            sub.textContent = state.qty[tData.code] > 0 ? ` · ${money(tData.price * state.qty[tData.code])}` : '';
+          }
+          sync();
+        };
+        dec.addEventListener('click', () => { state.qty[tData.code] = Math.max(0, state.qty[tData.code] - 1); upd(); });
+        row.querySelector('[data-inc]')!.addEventListener('click', () => { state.qty[tData.code] = Math.min(tData.max || 20, state.qty[tData.code] + 1); upd(); });
         dec.disabled = currentQty === 0;
         c.appendChild(row);
       });
@@ -462,7 +526,8 @@ const icon = (n: string) =>
           if (state.allDay) {
             // no time to choose — the day's session IS the selection
             state.session = state.byDate[iso][0];
-            el('[data-step-session]').hidden = true;
+            el('[data-step-session]').hidden = false;
+            renderSessions();
           } else {
             state.session = null;
             el('[data-step-session]').hidden = false;
@@ -477,6 +542,15 @@ const icon = (n: string) =>
     /* ---- 04 · time ---- */
     function renderSessions() {
       const c = el('[data-sessions]'); c.innerHTML = '';
+      if (state.allDay) {
+        c.innerHTML = `
+          <div class="allday-banner">
+            <span class="allday-badge">Flexible Entry</span>
+            <p class="allday-text">Your ticket is valid anytime between <strong>9:00 AM – 4:00 PM</strong> on your selected date. No time reservation required.</p>
+          </div>
+        `;
+        return;
+      }
       (state.byDate[state.date] || []).sort((a: any, b: any) => a.time.localeCompare(b.time)).forEach((s: any) => {
         const low = s.seatsAvailable != null && s.seatsAvailable <= 8;
         const b = document.createElement('button');
@@ -506,10 +580,18 @@ const icon = (n: string) =>
       el('[data-total]').textContent = money(total());
 
       const n = count();
-      if (!state.pkg || n === 0) { cta.textContent = 'Continue'; cta.disabled = !state.pkg; }
-      else if (!state.date || !state.session) { cta.textContent = `Book ${n} Ticket${n > 1 ? 's' : ''} • ${money(total())}`; cta.disabled = false; }
-      else { cta.textContent = `Secure Checkout • ${money(total())}`; cta.disabled = false; }
+      if (!state.pkg || n === 0) { cta.textContent = t('tickets.continue'); cta.disabled = !state.pkg; }
+      else if (!state.date || !state.session) { cta.textContent = `${t('nav.bookTickets')} (${n}) • ${money(total())}`; cta.disabled = false; }
+      else { cta.textContent = `${t('tickets.continue')} • ${money(total())}`; cta.disabled = false; }
     }
+
+    window.addEventListener('bod:locale_changed', () => {
+      bindTranslations(root);
+      if (state.pkg) {
+        renderTickets();
+        sync();
+      }
+    });
     /* ---- In-site checkout modal (Rezdy embed — the visitor never leaves us) ---- */
     const modal = document.querySelector<HTMLElement>('[data-comodal]')!;
     const frame = modal.querySelector<HTMLElement>('.co-modal__frame')!;
@@ -517,22 +599,43 @@ const icon = (n: string) =>
     let lenisPaused = false;
 
     function openCheckout() {
-      const params = new URLSearchParams({ iframe: 'true', date: state.date, time: state.session.time });
-      state.pkg.tiers.forEach((t: any) => { if (state.qty[t.code]) params.set(t.code, String(state.qty[t.code])); });
+      const returnTarget = `${window.location.origin}/tickets/confirmation?product=${encodeURIComponent(state.pkg.slug)}&date=${encodeURIComponent(state.date || '')}&time=${encodeURIComponent(state.session ? (state.allDay ? 'Flexible Entry' : state.session.time) : '')}`;
+      const params = new URLSearchParams({
+        iframe: 'true',
+        redirectUrl: returnTarget,
+        returnUrl: returnTarget,
+      });
+      if (state.date) params.set('date', state.date);
+      if (state.session && state.session.time && !state.allDay) params.set('time', state.session.time);
+      state.pkg.tiers.forEach((t: any) => {
+        if (state.qty[t.code]) params.set(t.code, String(state.qty[t.code]));
+      });
       // fresh iframe each open so availability is current
       frame.querySelectorAll('iframe').forEach((f) => f.remove());
-      const load = document.createElement('div');
-      load.className = 'co-modal__load'; load.textContent = 'Loading secure checkout…';
-      frame.innerHTML = ''; frame.appendChild(load);
+      const load = modal.querySelector<HTMLElement>('[data-coload]');
+      if (load) load.style.display = 'flex';
       const iframe = document.createElement('iframe');
       const baseCheckout = state.pkg.checkoutUrl || 'https://rfdsdarwin1.rezdy.com';
       const sep = baseCheckout.includes('?') ? '&' : '?';
-      iframe.src = `${baseCheckout}${sep}${params.toString()}`;
+      const checkoutUrl = `${baseCheckout}${sep}${params.toString()}`;
+      iframe.src = checkoutUrl;
       iframe.title = 'Secure checkout';
       iframe.allow = 'payment';
-      iframe.addEventListener('load', () => load.remove());
+      iframe.addEventListener('load', () => {
+        if (load) load.style.display = 'none';
+      });
       frame.appendChild(iframe);
+
+      const extLink = modal.querySelector<HTMLAnchorElement>('[data-coext]');
+      if (extLink) extLink.href = checkoutUrl;
+
       coTitle.textContent = state.pkg.name;
+      const descEl = modal.querySelector<HTMLElement>('[data-codesc]');
+      if (descEl) {
+        const timeStr = state.allDay ? 'Flexible Entry' : (state.session ? state.session.time : '');
+        descEl.textContent = `${state.date || ''} ${timeStr ? '· ' + timeStr : ''} · Royal Flying Doctor Service`;
+      }
+
       modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('co-open');
       const lenis = (window as any).__lenis; if (lenis) { lenis.stop(); lenisPaused = true; }
@@ -545,12 +648,62 @@ const icon = (n: string) =>
     modal.querySelectorAll('[data-coclose]').forEach((b) => b.addEventListener('click', closeCheckout));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeCheckout(); });
 
-    cta.addEventListener('click', () => {
+    // Listen for Rezdy booking confirmation postMessage
+    window.addEventListener('message', (event) => {
+      try {
+        const d = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (d && (d.action === 'rezdy:orderConfirmed' || d.event === 'order_confirmed' || d.type === 'rezdy:bookingComplete' || d.orderNumber)) {
+          const orderNum = d.orderNumber || d.bookingNumber || '';
+          window.location.href = `/tickets/confirmation?orderNumber=${encodeURIComponent(orderNum)}&product=${encodeURIComponent(state.pkg.slug)}&date=${encodeURIComponent(state.date || '')}&time=${encodeURIComponent(state.session ? (state.allDay ? 'Flexible Entry' : state.session.time) : '')}`;
+        }
+      } catch {}
+    });
+
+    cta.addEventListener('click', async () => {
       if (!state.pkg) return;
       if (count() === 0) { document.getElementById('step-who')?.scrollIntoView({ behavior: 'smooth' }); return; }
       if (!state.date) { document.getElementById('step-date')?.scrollIntoView({ behavior: 'smooth' }); return; }
-      if (!state.session) { document.getElementById('step-time')?.scrollIntoView({ behavior: 'smooth' }); return; }
-      openCheckout();
+      if (!state.session && !state.allDay) { document.getElementById('step-time')?.scrollIntoView({ behavior: 'smooth' }); return; }
+
+      const alertEl = root.querySelector<HTMLElement>('[data-verifyalert]');
+      if (alertEl) alertEl.hidden = true;
+
+      // Enter pre-flight verification state
+      const origText = cta.textContent;
+      cta.disabled = true;
+      cta.textContent = 'Verifying Availability…';
+
+      try {
+        const verifyRes = await fetch('/api/rezdy/verify-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            productSlug: state.pkg.slug,
+            date: state.date,
+            time: state.session ? state.session.time : undefined,
+            sessionId: state.session ? state.session.id : undefined,
+            qty: state.qty,
+          }),
+        });
+        const verifyData = await verifyRes.json();
+
+        if (verifyData && verifyData.available) {
+          sync();
+          openCheckout();
+        } else {
+          sync();
+          if (alertEl) {
+            alertEl.textContent = verifyData?.message || 'The selected session is no longer available. Please choose another time or date.';
+            alertEl.hidden = false;
+          }
+          const targetStep = state.allDay ? 'step-date' : 'step-time';
+          document.getElementById(targetStep)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } catch (err) {
+        // Resilient fallback: if network probe times out, allow proceeding to Rezdy hosted checkout
+        sync();
+        openCheckout();
+      }
     });
     sync();
   }
