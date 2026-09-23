@@ -35,7 +35,7 @@ import { SITE } from '../consts';
   </section>
 
   <!-- Included: the RFDS Experience -->
-  <section class="section rfds" style="border-top:1px solid var(--line);">
+  <section class="section rfds">
     <div class="container rfds__grid">
       <div class="rfds__intro">
         <p class="eyebrow eyebrow--gold">Included Experience</p>
@@ -108,6 +108,29 @@ import { SITE } from '../consts';
   }
 
   /* ---- Included: RFDS ---- */
+  .rfds {
+    position: relative;
+    padding-block: clamp(90px, 14vw, 160px);
+    background:
+      radial-gradient(
+        ellipse 90% 60% at 50% 50%,
+        rgba(0, 141, 199, 0.07) 0%,
+        rgba(0, 141, 199, 0.025) 45%,
+        transparent 75%
+      ),
+      linear-gradient(
+        180deg,
+        #0c0c0b 0%,
+        #041525 14%,
+        #022649 28%,
+        #004684 42%,
+        #004684 58%,
+        #022649 72%,
+        #041525 86%,
+        #0c0c0b 100%
+      );
+  }
+
   .rfds__grid { display: grid; gap: clamp(32px, 5vw, 72px); align-items: start; }
   @media (min-width: 920px) { .rfds__grid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); } }
 
@@ -124,12 +147,23 @@ import { SITE } from '../consts';
 
   .rfds__card {
     display: flex; flex-direction: column; overflow: hidden;
-    background: linear-gradient(165deg, var(--char-2) 0%, var(--char) 70%);
-    border: 1px solid var(--line); border-radius: 6px;
-    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
-    transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+    background: linear-gradient(175deg, rgba(6, 24, 44, 0.72) 0%, rgba(3, 15, 29, 0.82) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 32px rgba(0, 8, 20, 0.35);
+    transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease), box-shadow 0.3s var(--ease);
   }
-  .rfds__card:hover { transform: translateY(-4px); border-color: rgba(198, 161, 91, 0.45); }
+  .rfds__card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.22);
+    background: linear-gradient(175deg, rgba(8, 30, 56, 0.78) 0%, rgba(4, 18, 36, 0.86) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 16px 36px rgba(0, 8, 20, 0.45);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rfds__card:hover { transform: none; }
+  }
 
   .rfds__card--wide { flex-direction: column; }
   @media (min-width: 640px) { .rfds__card--wide { display: grid; grid-template-columns: 48% 1fr; } .rfds__card--wide .rfds__media { min-height: 260px; } }
