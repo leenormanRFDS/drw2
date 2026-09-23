@@ -49,7 +49,7 @@ export const PEOPLE: Person[] = [
     name: 'Matthias Ampiyartiliwayi Ulungura',
     role: 'Tiwi Man',
     faction: 'Melville Island',
-    desc: "Hear the story of Matthias Ampiyartiliwayi Ulungura, the Tiwi man who captured the first prisoner of war on Australian soil. Shared through generations of Tiwi oral tradition, including storytelling, song and dance, this experience offers a unique First Nations perspective on the events of 19 February 1942.",
+    desc: "Hear the story of Matthias Ampiyartiliwayi Ulungura, the Tiwi man who captured the first prisoner of war on Australian soil — a unique First Nations perspective on the events of 19 February 1942.",
     initials: 'MU',
     image: '/images/people/ulungura.webp',
     cultural: true,
